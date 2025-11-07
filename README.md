@@ -2,17 +2,18 @@
 Block diagram for systems project milestone 4
 ```mermaid
 flowchart LR
-  R["Temperature setpoint r(t)"]
-  E["Error signal e(t)"]
-  C["Controller C(s)"]
-  PWM["Arduino PWM & L293D"]
-  M["DC fan/motor"]
+  R["Target Temperature  r(t)"]
+  E["Error  e(t) = r(t) - y_m(t)"]
+  C["Controller  C(s) = Kp  (Proportional Control)"]
+  PWM["PWM Generator  A(s)"]
+  Dvr["Motor Driver  L293D  (Gain Kd)"]
+  M["DC Fan Motor  Gm(s)"]
+  Th["Thermal Cooling Path  Gth(s)"]
   SUMU[["+"]]
-  Gth["Thermal plant"]
-  Y["Air/board temperature  y(t)"]
-  S["Sensor TMP36 + ADC  H(s)"]
-  D["Heat disturbance  qd(t)"]
+  Y["Actual Temperature  y(t)"]
+  Sns["TMP36 Sensor + ADC  H(s)"]
+  Dist["Heat Disturbance  d(t)"]
 
-  R --> E --> C --> PWM --> M --> SUMU --> Gth --> Y --> S --> E
-  D --> SUMU
-  Y -->|measured| S
+  R --> E --> C --> PWM --> Dvr --> M --> SUMU --> Th --> Y --> Sns --> E
+  Dist --> SUMU
+  Y -->|Measured feedback| Sns
